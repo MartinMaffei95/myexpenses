@@ -7,6 +7,7 @@ import {
   postTransaction,
   updateTransaction,
 } from '../controllers/transaction';
+import { checkJWT } from '../middleware/session';
 
 const router = Router();
 
@@ -14,16 +15,16 @@ const router = Router();
  * http//localhost:3001/transactions
  */
 
-router.get('/all', getTransactions);
+router.get('/all', checkJWT, getTransactions);
 
-router.get('/:id', getTransaction);
+router.get('/:id', checkJWT, getTransaction);
 
-router.get('/?', getQueryTransactions);
+router.get('/?', checkJWT, getQueryTransactions);
 
-router.post('/', postTransaction);
+router.post('/', checkJWT, postTransaction);
 
-router.put('/:id', updateTransaction);
+router.put('/:id', checkJWT, updateTransaction);
 
-router.delete('/:id', deleteTransaction);
+router.delete('/:id', checkJWT, deleteTransaction);
 
 export { router };

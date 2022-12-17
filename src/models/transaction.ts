@@ -8,7 +8,7 @@ const TransactionSchema = new Schema<Transaction>(
       type: Number,
       required: true,
     },
-    name: {
+    account: {
       type: String,
       required: true,
     },
