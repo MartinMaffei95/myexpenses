@@ -9,16 +9,13 @@ const TransactionSchema = new Schema<Transaction>(
       required: true,
     },
     account: {
-      type: String,
+      type: Schema.Types.ObjectId,
       required: true,
+      ref: 'account',
     },
-    family: {
-      type: String,
-      required: true,
-    },
-    sub_family: {
-      type: String,
-      default: undefined,
+    category: {
+      type: Schema.Types.ObjectId,
+      ref: 'category',
     },
     comment: {
       type: String,
@@ -33,6 +30,11 @@ const TransactionSchema = new Schema<Transaction>(
       type: String,
       required: true,
       enum: ['addition', 'substraction'],
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'user',
     },
   },
   {

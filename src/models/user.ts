@@ -15,6 +15,19 @@ const UserSchema = new Schema<User>(
       type: String,
       required: true,
     },
+    accounts: [
+      {
+        type: Types.ObjectId,
+        default: [],
+        ref: 'account',
+      },
+    ],
+    my_categories: [
+      {
+        type: Object,
+        default: [],
+      },
+    ],
   },
   {
     timestamps: true,

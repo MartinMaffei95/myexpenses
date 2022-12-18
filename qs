@@ -1,0 +1,17 @@
+[33mcommit 90f25684d83085a25f9b09de6971a6eb5bded592[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: Your Name Martin <you@example.comMartinMaffei95@gmail.com>
+Date:   Sat Dec 17 20:00:01 2022 -0300
+
+    created basic register and login sistem & JWT is up
+
+[33mcommit 10725562d809e152980d6265d63abe323658ca4d[m
+Author: Your Name Martin <you@example.comMartinMaffei95@gmail.com>
+Date:   Fri Dec 16 16:03:38 2022 -0300
+
+    Basic CRUD operations ready to use.
+
+[33mcommit bfddf1ca361e82894b191f7e069d8f624bad141d[m
+Author: Your Name Martin <you@example.comMartinMaffei95@gmail.com>
+Date:   Fri Dec 16 02:25:45 2022 -0300
+
+    Initialized proyect
