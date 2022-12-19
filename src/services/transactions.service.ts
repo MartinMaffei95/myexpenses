@@ -1,13 +1,17 @@
 import { Transaction } from '../interfaces/transaction.interface';
 import TransactionModel from '../models/transaction';
 
-const insertTransaction = async (transaction: Transaction) => {
-  const responseInsert = await TransactionModel.create(transaction);
+const insertTransaction = async (transaction: Transaction, { user }: any) => {
+  const newTransaction = { ...transaction, created_by: user._id };
+  const responseInsert = await TransactionModel.create(newTransaction);
   return responseInsert;
 };
 
-const getAllTransactions = async () => {
-  const responseTransactions = await TransactionModel.find({});
+const getAllTransactions = async ({ user }: any) => {
+  const { _id } = user;
+  const responseTransactions = await TransactionModel.find({
+    created_by: _id,
+  });
   return responseTransactions;
 };
 

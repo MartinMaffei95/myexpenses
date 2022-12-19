@@ -5,7 +5,7 @@ import { handleHttp } from '../utils/error.handler';
 const getUser = async ({ params }: Request, res: Response) => {
   try {
     const { id } = params;
-    const userData = getMyUserData(id);
+    const userData = await getMyUserData(id);
     res.send(userData);
   } catch (e) {
     handleHttp(res, 'USER_NOT_FOUND', e);

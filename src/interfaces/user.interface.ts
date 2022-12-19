@@ -5,5 +5,6 @@ import { Category } from './category.interface';
 export interface User extends Auth {
   name: string;
   accounts: [Account];
-  my_categories: [Category];
+  my_categories: Category[] | null;
+  categories: Array<object>;
 }

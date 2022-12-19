@@ -13,8 +13,13 @@ const TransactionSchema = new Schema<Transaction>(
       required: true,
       ref: 'account',
     },
-    category: {
+    created_by: {
       type: Schema.Types.ObjectId,
+      required: true,
+      ref: 'users',
+    },
+    category: {
+      type: Schema.Types.Mixed,
       ref: 'category',
     },
     comment: {
@@ -30,11 +35,6 @@ const TransactionSchema = new Schema<Transaction>(
       type: String,
       required: true,
       enum: ['addition', 'substraction'],
-    },
-    user: {
-      type: Schema.Types.ObjectId,
-      required: true,
-      ref: 'user',
     },
   },
   {

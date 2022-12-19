@@ -25,18 +25,18 @@ const registerNewUser = async ({ username, password, name }: User) => {
 };
 
 const loginUser = async ({ username, password }: User) => {
-  const checkIs = await UserModel.findOne({ username });
-  if (!checkIs) {
+  const user = await UserModel.findOne({ username });
+  if (!user) {
     return 'WRONG_CREDENTIALS';
   }
-  const passHash = checkIs.password;
+  const passHash = user.password;
   const isCorrect = await verified(password, passHash);
 
   if (!isCorrect) return 'WRONG_CREDENTIALS';
-  const token = await generateToken(checkIs.username);
+  const token = await generateToken(user);
   const data = {
     token,
-    user: checkIs,
+    user: user,
   };
   return data;
 };
