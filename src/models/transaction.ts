@@ -34,7 +34,7 @@ const TransactionSchema = new Schema<Transaction>(
     type: {
       type: String,
       required: true,
-      enum: ['addition', 'substraction'],
+      enum: ['ADDITION', 'SUBSTRACTION'],
     },
   },
   {

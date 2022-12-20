@@ -2,18 +2,18 @@ import { Category } from '../interfaces/category.interface';
 
 export const categories: Category[] = [
   {
-    id: 1,
+    id: '1',
     name: 'Transport',
     icon: null,
     sub_category: [
       {
-        id: 11,
+        id: '11',
         name: 'Taxi',
         icon: null,
         sub_category: null,
       },
       {
-        id: 12,
+        id: '12',
         name: 'Bus',
         icon: null,
         sub_category: null,
@@ -21,24 +21,24 @@ export const categories: Category[] = [
     ],
   },
   {
-    id: 2,
+    id: '2',
     name: 'Food',
     icon: null,
     sub_category: [
       {
-        id: 21,
+        id: '21',
         name: 'Bar',
         icon: null,
         sub_category: null,
       },
       {
-        id: 22,
+        id: '22',
         name: 'Supermarket',
         icon: null,
         sub_category: null,
       },
       {
-        id: 23,
+        id: '23',
         name: 'Restourant',
         icon: null,
         sub_category: null,
@@ -46,13 +46,13 @@ export const categories: Category[] = [
     ],
   },
   {
-    id: 3,
+    id: '3',
     name: 'Other income',
     icon: null,
     sub_category: null,
   },
   {
-    id: 4,
+    id: '4',
     name: 'Taxes',
     icon: null,
     sub_category: null,

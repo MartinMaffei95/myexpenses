@@ -42,9 +42,14 @@ const postTransaction = async ({ body, user }: RequestExt, res: Response) => {
   }
 };
 
-const getQueryTransactions = async ({ query }: Request, res: Response) => {
+const getQueryTransactions = async (
+  { query, user }: RequestExt,
+  res: Response
+) => {
   try {
-    const response_transaction = await getTransactionByQuery(query);
+    console.log('CONTROLLER : ', query);
+
+    const response_transaction = await getTransactionByQuery(query, user);
     res.send(response_transaction);
   } catch (e) {
     handleHttp(res, 'ERROR_POST_TRANSACTION', e);

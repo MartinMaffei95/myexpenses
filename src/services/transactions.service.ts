@@ -1,10 +1,45 @@
 import { Transaction } from '../interfaces/transaction.interface';
+import AccountModel from '../models/account';
 import TransactionModel from '../models/transaction';
+import { createQuery } from '../utils/createQuery.handler';
 
 const insertTransaction = async (transaction: Transaction, { user }: any) => {
   const newTransaction = { ...transaction, created_by: user._id };
   const responseInsert = await TransactionModel.create(newTransaction);
-  return responseInsert;
+  switch (transaction.type) {
+    case 'SUBSTRACTION':
+      await AccountModel.findOneAndUpdate(
+        {
+          _id: transaction.account,
+        },
+        {
+          $inc: {
+            balance: -transaction.value,
+          },
+        }
+      );
+
+      return responseInsert;
+
+      break;
+
+    case 'ADDITION':
+      await AccountModel.findOneAndUpdate(
+        {
+          _id: transaction.account,
+        },
+        {
+          $inc: {
+            balance: transaction.value,
+          },
+        }
+      );
+
+      return responseInsert;
+      break;
+    default:
+      break;
+  }
 };
 
 const getAllTransactions = async ({ user }: any) => {
@@ -20,8 +55,13 @@ const getTransactionById = async (id: string) => {
   return responseTransactions;
 };
 
-const getTransactionByQuery = async (query: object) => {
-  const responseTransactions = await TransactionModel.find(query);
+const getTransactionByQuery = async (query: object, { user }: any) => {
+  const { _id } = user;
+  const mongoQuery = createQuery(query);
+  const responseTransactions = await TransactionModel.find({
+    ...mongoQuery,
+    created_by: _id,
+  });
   return responseTransactions;
 };
 

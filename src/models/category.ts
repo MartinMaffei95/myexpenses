@@ -9,11 +9,6 @@ const CategorySchema = new Schema<Category>(
     icon: {
       type: 'string',
     },
-    father_category: {
-      type: Schema.Types.ObjectId,
-      default: null,
-      ref: 'category',
-    },
     sub_category: [
       {
         type: Schema.Types.ObjectId,
