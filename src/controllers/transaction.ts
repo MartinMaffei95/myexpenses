@@ -3,22 +3,21 @@ import RequestExt from '../interfaces/RequestExt.interface';
 import {
   getAllTransactions,
   insertTransaction,
-  getTransactionById,
   getTransactionByQuery,
   updateTransactionData,
   deleteTransactionData,
 } from '../services/transactions.service';
 import { handleHttp } from '../utils/error.handler';
 
-const getTransaction = async ({ params }: Request, res: Response) => {
-  try {
-    const { id } = params;
-    const response_transaction = await getTransactionById(id);
-    res.send(response_transaction);
-  } catch (e) {
-    handleHttp(res, 'ERROR_GET_TRANSACTION', e);
-  }
-};
+// const getTransaction = async ({ params }: Request, res: Response) => {
+//   try {
+//     const { id } = params;
+//     const response_transaction = await getTransactionById(id);
+//     res.send(response_transaction);
+//   } catch (e) {
+//     handleHttp(res, 'ERROR_GET_TRANSACTION', e);
+//   }
+// };
 
 const getTransactions = async ({ user }: RequestExt, res: Response) => {
   try {
@@ -48,7 +47,7 @@ const getQueryTransactions = async (
     const response_transaction = await getTransactionByQuery(query, user);
     res.send(response_transaction);
   } catch (e) {
-    handleHttp(res, 'ERROR_POST_TRANSACTION', e);
+    handleHttp(res, 'ERROR_SEARCHING', e);
   }
 };
 
@@ -79,7 +78,6 @@ const deleteTransaction = async (
 };
 
 export {
-  getTransaction,
   getTransactions,
   getQueryTransactions,
   postTransaction,

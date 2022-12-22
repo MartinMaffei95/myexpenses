@@ -2,7 +2,6 @@ import { Request, Response, Router } from 'express';
 import {
   deleteTransaction,
   getQueryTransactions,
-  getTransaction,
   getTransactions,
   postTransaction,
   updateTransaction,
@@ -35,6 +34,11 @@ const router = Router();
  *                  $ref: "#/components/schemas/transaction"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_GET_TRANSACTIONS"
  *      security:
  *        - bearerAuth: []
  */
@@ -128,6 +132,11 @@ router.get('/all', checkJWT, getTransactions);
  *                  $ref: "#/components/schemas/transaction"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_SEARCHING"
  *      security:
  *        - bearerAuth: []
  */
@@ -169,6 +178,11 @@ router.get('/?', checkJWT, getQueryTransactions);
  *                  $ref: "#/components/schemas/transaction"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_POST_TRANSACTION"
  *      security:
  *        - bearerAuth: []
  */
@@ -181,15 +195,14 @@ router.post('/', checkJWT, postTransaction);
  *    put:
  *      tags:
  *        - Transactions
- *      summary: "Edit a existing transaction"
- *      description: Edit a transaction
+ *      summary: "Edit a transaction"
  *      parameters:
  *        - in: path
  *          name: id
  *          schema:
  *            type: string
  *          required: true
- *          description: ID of the account to get
+ *          description: ID of the transaction
  *      requestBody:
  *          description: Object with data for account.
  *          required: true
@@ -220,6 +233,11 @@ router.post('/', checkJWT, postTransaction);
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_UPDATE_TRANSACTION"
  *      security:
  *        - bearerAuth: []
  */
@@ -232,15 +250,14 @@ router.put('/:id', checkJWT, updateTransaction);
  *    delete:
  *      tags:
  *        - Transactions
- *      summary: "Edit a existing transaction"
- *      description: Edit a transaction
+ *      summary: "Delete a existing transaction"
  *      parameters:
  *        - in: path
  *          name: id
  *          schema:
  *            type: string
  *          required: true
- *          description: ID of the account to get
+ *          description: ID of the transaction
  *      requestBody:
  *          description: Object with data for account.
  *          required: true
@@ -271,6 +288,11 @@ router.put('/:id', checkJWT, updateTransaction);
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_REMOVE_TRANSACTION"
  *      security:
  *        - bearerAuth: []
  */

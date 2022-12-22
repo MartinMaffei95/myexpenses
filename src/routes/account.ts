@@ -35,6 +35,11 @@ const router = Router();
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ACCOUNT_NOT_FOUND"
  *      security:
  *        - bearerAuth: []
  */
@@ -79,6 +84,11 @@ router.get('/:id', checkJWT, getAccountData);
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_CREATING_ACCOUNT"
  *      security:
  *        - bearerAuth: []
  */
@@ -129,6 +139,11 @@ router.post('/', checkJWT, createNewAccount);
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_UPDATING_ACCOUNT"
  *      security:
  *        - bearerAuth: []
  */
@@ -148,30 +163,10 @@ router.put('/:id', checkJWT, updateAccountData);
  *          schema:
  *            type: string
  *          required: true
- *          description: ID of the account to get
- *      requestBody:
- *          description: Object with data for account.
- *          required: true
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  name:
- *                    type: string
- *                  description:
- *                    type: string
- *                  balance:
- *                    type: number
- *                  currency:
- *                    type: string
- *                  type:
- *                    type: string
- *                  color:
- *                    type: string
+ *          description: ID of the account
  *      responses:
  *        '200':
- *          description: Return a object with account data.
+ *          description: Return a string with account data.
  *          content:
  *            application/json:
  *              schema:
@@ -179,6 +174,11 @@ router.put('/:id', checkJWT, updateAccountData);
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_DELETING_ACCOUNT"
  *      security:
  *        - bearerAuth: []
  */

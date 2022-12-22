@@ -2,21 +2,20 @@ import { Transaction } from '../interfaces/transaction.interface';
 import AccountModel from '../models/account';
 import TransactionModel from '../models/transaction';
 import { createQuery } from '../utils/createQuery.handler';
-import { account_authorized } from '../utils/isAuthorized.handler';
+import { isAuthorized } from '../utils/isAuthorized.handler';
 
 const insertTransaction = async (transaction: Transaction, { user }: any) => {
-  const isAuthorized = await account_authorized(
-    transaction.account.toString(),
-    user._id
-  );
-  if (!isAuthorized) return;
+  const account_id = transaction.account.toString();
+
+  //This check if the file exists in collectionDb and if the client - who send the request - have authorization to used
+  let accountResponse = await isAuthorized(AccountModel, account_id, user._id);
 
   const newTransaction = { ...transaction, created_by: user._id };
   const responseInsert = await TransactionModel.create(newTransaction);
 
   switch (transaction.type) {
     case 'SUBSTRACTION':
-      await AccountModel.findByIdAndUpdate(transaction.account, {
+      await accountResponse.update({
         $inc: {
           balance: -transaction.value,
         },
@@ -27,7 +26,7 @@ const insertTransaction = async (transaction: Transaction, { user }: any) => {
       break;
 
     case 'ADDITION':
-      await AccountModel.findByIdAndUpdate(transaction.account, {
+      await accountResponse.update({
         $inc: {
           balance: transaction.value,
         },
@@ -49,10 +48,11 @@ const getAllTransactions = async ({ user }: any) => {
   return responseTransactions;
 };
 
-const getTransactionById = async (id: string) => {
-  const responseTransactions = await TransactionModel.find({ _id: id });
-  return responseTransactions;
-};
+// deprectated. u have the query find. use that with id
+// const getTransactionById = async (id: string) => {
+//   const responseTransactions = await TransactionModel.find({ _id: id });
+//   return responseTransactions;
+// };
 
 const getTransactionByQuery = async (query: object, { user }: any) => {
   const { _id } = user;
@@ -63,48 +63,40 @@ const getTransactionByQuery = async (query: object, { user }: any) => {
   });
   return responseTransactions;
 };
-
-const getAllTransactionsByType = async (type: string) => {
-  //'substraction' or 'addition'
-  const responseTransactions = await TransactionModel.find({ type: type });
-  return responseTransactions;
-};
+// deprectated. u have the query find. use that with type
+// const getAllTransactionsByType = async (type: string) => {
+//   //'substraction' or 'addition'
+//   const responseTransactions = await TransactionModel.find({ type: type });
+//   return responseTransactions;
+// };
 
 const updateTransactionData = async (
   id: string,
   transaction: Transaction,
   { user }: any
 ) => {
-  const isAuthorized = await account_authorized(
-    transaction.account.toString(),
-    user._id
-  );
-  if (!isAuthorized) return;
-  const responseTransaction = await TransactionModel.findOneAndUpdate(
-    { _id: id },
-    transaction,
-    { new: true }
-  );
+  const account_id = transaction.account.toString();
+  //This check if the file exists in account collection and if the client - who send the request - have authorization to used
+  await isAuthorized(AccountModel, account_id, user._id);
+  // Now check the same in the transaction
+  let responseTransaction = await isAuthorized(TransactionModel, id, user._id);
+  //Aaaaaand finally update the transaction and retur them
+  responseTransaction = await responseTransaction.update(transaction, {
+    new: true,
+  });
   return responseTransaction;
 };
 
 const deleteTransactionData = async (id: string, user: any) => {
-  const transaction = await TransactionModel.findById(id);
-  if (!transaction) return;
-  const isAuthorized = await account_authorized(
-    transaction.account.toString(),
-    user._id
-  );
-  if (!isAuthorized) return;
+  let responseTransaction = await isAuthorized(TransactionModel, id, user._id);
 
-  const responseTransactions = await TransactionModel.remove({ _id: id });
-  return responseTransactions;
+  responseTransaction = await responseTransaction.remove();
+  return responseTransaction;
 };
 
 export {
   insertTransaction,
   getAllTransactions,
-  getTransactionById,
   getTransactionByQuery,
   updateTransactionData,
   deleteTransactionData,

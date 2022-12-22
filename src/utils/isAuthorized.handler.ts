@@ -1,17 +1,41 @@
-import AccountModel from '../models/account';
+import { Model } from 'mongoose';
 
-const account_authorized = async (account_id: string, user_id: string) => {
-  //ACCOUNT EXISTS?
-  const accountFinded = await AccountModel.findById(account_id);
-  if (!accountFinded) {
+const isAuthorized = async (
+  model: Model<any>,
+  model_id: object | string,
+  user_id: object | string
+) => {
+  // FIND A RESULT?
+  const mongoResult = await model.findById(model_id);
+  if (!mongoResult) {
     throw new Error('ACCOUNT_NOT_FOUND');
   }
 
-  //USER IS dueño OF ACCOUNT  ?
-  if (accountFinded.from.toString() !== user_id) {
+  // USER IS OWNER OF RESULT  ?
+  if (mongoResult.created_by.toString() !== user_id) {
     throw new Error('YOU_DONT_HAVE_PERMISSIONS');
   }
-  return true;
+
+  return mongoResult;
 };
 
-export { account_authorized };
+const isAuthorizedUser = async (
+  model: Model<any>,
+  model_id: object | string,
+  user_id: object | string
+) => {
+  // FIND A RESULT?
+  const mongoResult = await model.findById(model_id);
+  if (!mongoResult) {
+    throw new Error('ACCOUNT_NOT_FOUND');
+  }
+
+  // USER IS OWNER OF RESULT  ?
+  if (mongoResult._id.toString() !== user_id) {
+    throw new Error('YOU_DONT_HAVE_PERMISSIONS');
+  }
+
+  return mongoResult;
+};
+
+export { isAuthorized, isAuthorizedUser };

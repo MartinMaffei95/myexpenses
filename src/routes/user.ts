@@ -1,5 +1,10 @@
 import { Request, Response, Router } from 'express';
-import { getUser } from '../controllers/user';
+import {
+  changePassword,
+  deleteUser,
+  editUser,
+  getUser,
+} from '../controllers/user';
 
 import { checkJWT } from '../middleware/session';
 
@@ -16,7 +21,7 @@ const router = Router();
  *    get:
  *      tags:
  *        - Users
- *      summary: "Delete a account"
+ *      summary: "Get a user data by id"
  *      parameters:
  *        - in: path
  *          name: id
@@ -24,26 +29,6 @@ const router = Router();
  *            type: string
  *          required: true
  *          description: ID of the account to get
- *      requestBody:
- *          description: Object with data for account.
- *          required: true
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  name:
- *                    type: string
- *                  description:
- *                    type: string
- *                  balance:
- *                    type: number
- *                  currency:
- *                    type: string
- *                  type:
- *                    type: string
- *                  color:
- *                    type: string
  *      responses:
  *        '200':
  *          description: Return a object with account data.
@@ -54,6 +39,11 @@ const router = Router();
  *                $ref: "#/components/schemas/account"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_DELETING_USER"
  *      security:
  *        - bearerAuth: []
  */
@@ -67,13 +57,14 @@ router.get('/:id', checkJWT, getUser);
  *      tags:
  *        - Users
  *      summary: "Edit a user"
+ *      description: Change your user information using this endpoint. If you want to change any specific data, send only that field. Return a new token
  *      parameters:
  *        - in: path
  *          name: id
  *          schema:
  *            type: string
  *          required: true
- *          description: ID of the account to get
+ *          description: ID of the account
  *      requestBody:
  *          description: Object with data for account.
  *          required: true
@@ -84,16 +75,13 @@ router.get('/:id', checkJWT, getUser);
  *                properties:
  *                  name:
  *                    type: string
- *                  description:
+ *                  username:
  *                    type: string
- *                  balance:
- *                    type: number
- *                  currency:
- *                    type: string
- *                  type:
- *                    type: string
- *                  color:
- *                    type: string
+ *                  my_categories:
+ *                    description: The array who u send overwrites the old array
+ *                    type: array
+ *                    items:
+ *                      type: string
  *      responses:
  *        '200':
  *          description: Return a object with account data.
@@ -101,13 +89,77 @@ router.get('/:id', checkJWT, getUser);
  *            application/json:
  *              schema:
  *                type: object
- *                $ref: "#/components/schemas/account"
+ *                properties:
+ *                  token:
+ *                    type: string
+ *                  user:
+ *                    $ref: "#/components/schemas/user"
  *        '404':
  *          description: Have a error creating the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_UPDATING_USER"
  *      security:
  *        - bearerAuth: []
  */
-router.put('/:id', checkJWT);
+router.put('/:id', checkJWT, editUser);
+
+/**
+ * Post track
+ * @openapi
+ * /user/{id}/changePass:
+ *    put:
+ *      tags:
+ *        - Users
+ *      summary: "Edit password"
+ *      description: Change your password using this endpoint. Need send old pass and new. Return a new token
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: ID of the account
+ *      requestBody:
+ *          description: Object with data for account.
+ *          required: true
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  userPassword:
+ *                    type: string
+ *                  newPassword:
+ *                    type: string
+ *                example:
+ *                  userPassword: MyActualPassword
+ *                  newPassword: MyNewPassword
+ *      responses:
+ *        '200':
+ *          description: Return a object with account data.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  token:
+ *                    type: string
+ *                  user:
+ *                    $ref: "#/components/schemas/user"
+ *        '404':
+ *          description: Have a error editing the password.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_UPDATING_PASS"
+ *      security:
+ *        - bearerAuth: []
+ */
+router.put('/:id/changePass', checkJWT, changePassword);
 
 /**
  * Post track
@@ -123,40 +175,25 @@ router.put('/:id', checkJWT);
  *          schema:
  *            type: string
  *          required: true
- *          description: ID of the account to get
- *      requestBody:
- *          description: Object with data for account.
- *          required: true
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                properties:
- *                  name:
- *                    type: string
- *                  description:
- *                    type: string
- *                  balance:
- *                    type: number
- *                  currency:
- *                    type: string
- *                  type:
- *                    type: string
- *                  color:
- *                    type: string
+ *          description: ID of the account
  *      responses:
  *        '200':
  *          description: Return a object with account data.
  *          content:
  *            application/json:
  *              schema:
- *                type: object
- *                $ref: "#/components/schemas/account"
+ *                type: string
+ *              example: "USER_DELETED"
  *        '404':
- *          description: Have a error creating the user.
+ *          description: Have a error deleting the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ERROR_DELETING_USER"
  *      security:
  *        - bearerAuth: []
  */
-router.delete('/:id', checkJWT);
+router.delete('/:id', checkJWT, deleteUser);
 
 export { router };

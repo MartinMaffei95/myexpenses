@@ -10,7 +10,7 @@ export interface Account {
   type: AccountList; // cash, bank, credit card
   tags: [string] | null;
   color: string; //
-  from: object; //user who created this account
+  created_by: object; //user who created this account
   shared_with: [{ user: User; rol: string }] | null; // rol => admin or invited,
   transactions: [string | object] | [] | null; // Array with id of traansactions
 }

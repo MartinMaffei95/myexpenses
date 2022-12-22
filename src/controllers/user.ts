@@ -1,5 +1,11 @@
 import { Request, response, Response } from 'express';
-import { getMyUserData } from '../services/user.services';
+import RequestExt from '../interfaces/RequestExt.interface';
+import {
+  getMyUserData,
+  editMyUserData,
+  changeMyPassword,
+  deleteMyUser,
+} from '../services/user.services';
 import { handleHttp } from '../utils/error.handler';
 
 const getUser = async ({ params }: Request, res: Response) => {
@@ -12,4 +18,40 @@ const getUser = async ({ params }: Request, res: Response) => {
   }
 };
 
-export { getUser };
+const editUser = async ({ body, user, params }: RequestExt, res: Response) => {
+  try {
+    const { id } = params;
+    const userData = await editMyUserData(body, user, id);
+    res.send(userData);
+  } catch (e) {
+    handleHttp(res, 'ERROR_UPDATING_USER', e);
+  }
+};
+
+const changePassword = async (
+  { body, user, params }: RequestExt,
+  res: Response
+) => {
+  try {
+    const { id } = params;
+    const userData = await changeMyPassword(body, user, id);
+    res.send(userData);
+  } catch (e) {
+    handleHttp(res, 'ERROR_UPDATING_PASS', e);
+  }
+};
+
+const deleteUser = async (
+  { body, user, params }: RequestExt,
+  res: Response
+) => {
+  try {
+    const { id } = params;
+    const userData = await deleteMyUser(body, user, id);
+    res.send(userData);
+  } catch (e) {
+    handleHttp(res, 'ERROR_DELETING_USER', e);
+  }
+};
+
+export { getUser, editUser, changePassword, deleteUser };

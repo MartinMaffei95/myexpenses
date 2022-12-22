@@ -34,7 +34,7 @@ const AccountSchema = new Schema<Account>(
       type: String,
       required: true,
     },
-    from: {
+    created_by: {
       type: Schema.Types.ObjectId,
       ref: 'users',
     },

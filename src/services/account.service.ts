@@ -2,9 +2,12 @@ import { Account } from '../interfaces/account.interface';
 import AccountModel from '../models/account';
 import TransactionModel from '../models/transaction';
 import UserModel from '../models/user';
+import { isAuthorized } from '../utils/isAuthorized.handler';
 
-const findAccountById = async (id: string) => {
-  const accountResponse = await AccountModel.findById(id).populate({
+const findAccountById = async ({ user }: any, id: string) => {
+  //This check if the file exists in collectionDb and if the client - who send the request - have authorization to used
+  let accountResponse = await isAuthorized(AccountModel, id, user._id);
+  accountResponse = await accountResponse.populate({
     path: 'transactions',
   });
 
@@ -54,10 +57,11 @@ const updateAccount = async (
     color,
     shared_with,
   }: Account,
+  { user }: any,
   id: string
 ) => {
-  const oldAccountData = await AccountModel.findById(id);
-  if (!oldAccountData) throw new Error('ACCOUNT_NOT_FOUND');
+  //This check if the file exists in collectionDb and if the client - who send the request - have authorization to used
+  const oldAccountData = await isAuthorized(AccountModel, id, user._id);
 
   const updatedAccount = {
     name: name || oldAccountData.name,
@@ -80,14 +84,8 @@ const updateAccount = async (
 };
 
 const deleteAccount = async ({ user }: any, id: string) => {
-  const accountResponse = await AccountModel.findById(id);
-  if (!accountResponse) throw new Error('ACCOUNT_NOT_FOUND');
-
-  //first check if the account property "from" is same as the user._id
-
-  if (accountResponse.from.toString() !== user._id) {
-    throw new Error('YOU_DONT_HAVE_PERMISSIONS');
-  }
+  //This check if the file exists in collectionDb and if the client - who send the request - have authorization to used
+  const accountResponse = await isAuthorized(AccountModel, id, user._id);
 
   //If the account have transaction then will be deleted
   let transactionsToDelete = accountResponse.transactions;

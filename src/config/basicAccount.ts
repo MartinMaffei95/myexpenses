@@ -12,7 +12,7 @@ export const createBasicAccount = (userId: object) => {
     type: AccountList.CASH,
     tags: null,
     color: 'blue',
-    from: userId,
+    created_by: userId,
     shared_with: null,
     transactions: [],
   };

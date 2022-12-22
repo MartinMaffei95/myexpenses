@@ -8,13 +8,13 @@ import {
 } from '../services/account.service';
 import { handleHttp } from '../utils/error.handler';
 
-const getAccountData = async ({ params }: Request, res: Response) => {
+const getAccountData = async ({ user, params }: RequestExt, res: Response) => {
   const { id } = params;
   try {
-    const accountResponse = await findAccountById(id);
+    const accountResponse = await findAccountById(user, id);
     res.send(accountResponse);
   } catch (e) {
-    handleHttp(res, 'ACCOUNT_NOT_EXISTS', e);
+    handleHttp(res, 'ACCOUNT_NOT_FOUND', e);
   }
 };
 
@@ -28,15 +28,15 @@ const createNewAccount = async ({ body, user }: RequestExt, res: Response) => {
 };
 
 const updateAccountData = async (
-  { body, params }: RequestExt,
+  { body, user, params }: RequestExt,
   res: Response
 ) => {
   const { id } = params;
   try {
-    const accountResponse = await updateAccount(body, id);
+    const accountResponse = await updateAccount(body, user, id);
     res.send(accountResponse);
   } catch (e) {
-    handleHttp(res, 'ERROR_CREATING_ACCOUNT', e);
+    handleHttp(res, 'ERROR_UPDATING_ACCOUNT', e);
   }
 };
 
