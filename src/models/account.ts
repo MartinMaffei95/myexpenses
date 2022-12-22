@@ -1,5 +1,5 @@
 import { Schema, Types, Model, model } from 'mongoose';
-import { Account } from '../interfaces/accounts.interface';
+import { Account } from '../interfaces/account.interface';
 
 const AccountSchema = new Schema<Account>(
   {
@@ -43,6 +43,13 @@ const AccountSchema = new Schema<Account>(
         type: Schema.Types.ObjectId,
         default: [],
         ref: 'users',
+      },
+    ],
+    transactions: [
+      {
+        type: Schema.Types.ObjectId,
+        default: [],
+        ref: 'transaction',
       },
     ],
   },

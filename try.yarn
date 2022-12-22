@@ -1,0 +1,18 @@
+Post track
+@openapi
+/register
+    post:
+        tags:
+            - users
+    summary: "Create a new user"
+    description: "Endopoint for creating a new user"
+    requestBody:
+        content:
+            aplication/json:
+                schema:
+                    $ref:"#/components/schemas/user"
+    responses:
+        '200':
+            "The user was successfully created."
+        '401'
+            description: "Have a error creating the user."

@@ -16,6 +16,7 @@ const registerNewUser = async ({ username, password, name }: User) => {
   const accountToCreate = createBasicAccount(userId);
   const registeredAccount = await AccountModel.create(accountToCreate);
   const registeredUser = await UserModel.create({
+    _id: userId,
     username,
     password: passHash,
     name,

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { JwtPayload } from 'jsonwebtoken';
+import RequestExt from '../interfaces/RequestExt.interface';
 import {
   getAllTransactions,
   insertTransaction,
@@ -9,10 +9,6 @@ import {
   deleteTransactionData,
 } from '../services/transactions.service';
 import { handleHttp } from '../utils/error.handler';
-
-interface RequestExt extends Request {
-  user?: string | JwtPayload;
-}
 
 const getTransaction = async ({ params }: Request, res: Response) => {
   try {
@@ -56,20 +52,26 @@ const getQueryTransactions = async (
   }
 };
 
-const updateTransaction = async ({ params, body }: Request, res: Response) => {
+const updateTransaction = async (
+  { params, body, user }: RequestExt,
+  res: Response
+) => {
   try {
     const { id } = params;
-    const response_transaction = await updateTransactionData(id, body);
+    const response_transaction = await updateTransactionData(id, body, user);
     res.send(response_transaction);
   } catch (e) {
     handleHttp(res, 'ERROR_UPDATE_TRANSACTION', e);
   }
 };
 
-const deleteTransaction = async ({ params }: Request, res: Response) => {
+const deleteTransaction = async (
+  { params, user }: RequestExt,
+  res: Response
+) => {
   try {
     const { id } = params;
-    const response_transaction = await deleteTransactionData(id);
+    const response_transaction = await deleteTransactionData(id, user);
     res.send('Se eliminó un registro');
   } catch (e) {
     handleHttp(res, 'ERROR_REMOVE_TRANSACTION', e);

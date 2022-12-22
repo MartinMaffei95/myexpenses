@@ -1,4 +1,4 @@
-import { Account } from './accounts.interface';
+import { Account } from './account.interface';
 import { Auth } from './auth.interface';
 import { Category } from './category.interface';
 

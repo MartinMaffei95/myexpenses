@@ -1,6 +1,6 @@
 import { AccountList } from '../enums/account.enum';
 import { CurrencyList } from '../enums/currency.enum';
-import { Account } from '../interfaces/accounts.interface';
+import { Account } from '../interfaces/account.interface';
 import { Schema, Types, Model, model } from 'mongoose';
 
 export const createBasicAccount = (userId: object) => {
@@ -14,6 +14,7 @@ export const createBasicAccount = (userId: object) => {
     color: 'blue',
     from: userId,
     shared_with: null,
+    transactions: [],
   };
   return basicAccount;
 };
