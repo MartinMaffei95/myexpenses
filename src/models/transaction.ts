@@ -11,7 +11,7 @@ const TransactionSchema = new Schema<Transaction>(
     account: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: 'account',
+      ref: 'accounts',
     },
     created_by: {
       type: Schema.Types.ObjectId,

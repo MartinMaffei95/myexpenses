@@ -4,10 +4,13 @@ import {
   deleteAccountData,
   getAccountData,
   updateAccountData,
+  getAllAccounts,
 } from '../controllers/account';
 import { checkJWT } from '../middleware/session';
 
 const router = Router();
+
+router.get('/all', checkJWT, getAllAccounts);
 
 /**
  * Post track

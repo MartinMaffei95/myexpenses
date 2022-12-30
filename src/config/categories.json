@@ -1,0 +1,74 @@
+[
+  {
+    "_id": "1",
+    "name": "Transport",
+    "icon": null,
+    "public": true,
+    "sub_category": ["11", "12"],
+    "isSubCategory": false
+  },
+  {
+    "_id": "11",
+    "name": "Taxi",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": true
+  },
+  {
+    "_id": "12",
+    "name": "Bus",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": true
+  },
+  {
+    "_id": "2",
+    "name": "Food",
+    "icon": null,
+    "public": true,
+    "sub_category": ["21", "22", "23"],
+    "isSubCategory": false
+  },
+  {
+    "_id": "3",
+    "name": "Other income",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": false
+  },
+  {
+    "_id": "4",
+    "name": "Taxes",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": false
+  },
+  {
+    "_id": "21",
+    "name": "Bar",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": true
+  },
+  {
+    "_id": "22",
+    "name": "Supermarket",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": true
+  },
+  {
+    "_id": "23",
+    "name": "Restourant",
+    "icon": null,
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": true
+  }
+]

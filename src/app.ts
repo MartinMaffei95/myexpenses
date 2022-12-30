@@ -7,6 +7,8 @@ import db from './config/mongo';
 // SWAGGER DOCS
 import swaggerUi from 'swagger-ui-express';
 import swaggerSetup from './docs/swagger';
+import CategoryModel from './models/category';
+import { categories } from './config/categories';
 
 const app = express();
 

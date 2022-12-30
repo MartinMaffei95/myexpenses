@@ -1,17 +1,26 @@
 import { categories } from '../config/categories';
 import { User } from '../interfaces/user.interface';
+import CategoryModel from '../models/category';
 import UserModel from '../models/user';
 import { encrypt, verified } from '../utils/bcrypt.handle';
 import { isAuthorizedUser } from '../utils/isAuthorized.handler';
 import { generateToken } from '../utils/jwt.handle';
 
 const getMyUserData = async (id: string) => {
-  const userData = await UserModel.findById(id);
-
+  let userData = await UserModel.findById(id).populate({
+    path: 'accounts',
+  });
   if (!userData) throw new Error('USER_NOT_FOUND');
 
-  userData.categories = categories;
-  const user = { ...userData.toObject(), categories };
+  const destructUser = userData.toObject();
+  const user_categories = await CategoryModel.find(
+    {
+      $or: [{ from: id }, { public: true }],
+    },
+    { isSubCategory: false }
+  ).populate([{ path: 'sub_category' }]);
+  destructUser.my_categories = [...user_categories];
+  const user = destructUser;
   return user;
 };
 

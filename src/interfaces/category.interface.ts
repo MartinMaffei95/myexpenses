@@ -1,6 +1,9 @@
 export interface Category {
-  id: string | object;
+  _id: string | object;
   name: string;
   icon: string | null;
-  sub_category: Category[] | null;
+  public: boolean;
+  from?: string;
+  sub_category: Category[] | null | string[] | object[];
+  isSubCategory: boolean;
 }

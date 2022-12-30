@@ -4,6 +4,16 @@ import TransactionModel from '../models/transaction';
 import UserModel from '../models/user';
 import { isAuthorized } from '../utils/isAuthorized.handler';
 
+const findAllAccounts = async ({ user }: any) => {
+  const { _id } = user;
+  let accountResponse = await AccountModel.find({
+    created_by: _id,
+  }).populate({
+    path: 'transactions',
+  });
+  return accountResponse;
+};
+
 const findAccountById = async ({ user }: any, id: string) => {
   //This check if the file exists in collectionDb and if the client - who send the request - have authorization to used
   let accountResponse = await isAuthorized(AccountModel, id, user._id);
@@ -109,4 +119,10 @@ const deleteAccount = async ({ user }: any, id: string) => {
   return removedAccountRepsonse;
 };
 
-export { findAccountById, createAccount, updateAccount, deleteAccount };
+export {
+  findAccountById,
+  createAccount,
+  updateAccount,
+  deleteAccount,
+  findAllAccounts,
+};

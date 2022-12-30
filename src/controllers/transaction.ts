@@ -22,7 +22,7 @@ import { handleHttp } from '../utils/error.handler';
 const getTransactions = async ({ user }: RequestExt, res: Response) => {
   try {
     const response_transactions = await getAllTransactions(user);
-    res.send({ data: response_transactions });
+    res.send(response_transactions);
   } catch (e) {
     handleHttp(res, 'ERROR_GET_TRANSACTIONS', e);
   }

@@ -5,8 +5,18 @@ import {
   deleteAccount,
   findAccountById,
   updateAccount,
+  findAllAccounts,
 } from '../services/account.service';
 import { handleHttp } from '../utils/error.handler';
+
+const getAllAccounts = async ({ user }: RequestExt, res: Response) => {
+  try {
+    const accountResponse = await findAllAccounts(user);
+    res.send(accountResponse);
+  } catch (e) {
+    handleHttp(res, 'ACCOUNT_NOT_FOUND', e);
+  }
+};
 
 const getAccountData = async ({ user, params }: RequestExt, res: Response) => {
   const { id } = params;
@@ -57,4 +67,5 @@ export {
   createNewAccount,
   updateAccountData,
   deleteAccountData,
+  getAllAccounts,
 };

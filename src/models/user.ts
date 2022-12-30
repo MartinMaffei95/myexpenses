@@ -19,13 +19,14 @@ const UserSchema = new Schema<User>(
       {
         type: Types.ObjectId,
         default: [],
-        ref: 'account',
+        ref: 'accounts',
       },
     ],
     my_categories: [
       {
-        type: Object,
+        type: Types.ObjectId,
         default: [],
+        ref: 'category',
       },
     ],
   },
