@@ -1,4 +1,3 @@
-import { categories } from '../config/categories';
 import { User } from '../interfaces/user.interface';
 import CategoryModel from '../models/category';
 import UserModel from '../models/user';
