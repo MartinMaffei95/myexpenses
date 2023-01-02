@@ -11,8 +11,24 @@ const AccountSchema = new Schema<Account>(
       type: String,
       default: null,
     },
+    initial_balance: {
+      type: Number,
+      default: 0,
+
+      required: true,
+    },
     balance: {
       type: Number,
+      required: true,
+    },
+    total_expenses: {
+      type: Number,
+      default: 0,
+      required: true,
+    },
+    total_income: {
+      type: Number,
+      default: 0,
       required: true,
     },
     currency: {

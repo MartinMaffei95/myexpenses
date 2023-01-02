@@ -29,6 +29,7 @@ const createAccount = async (
     name,
     description,
     balance,
+    initial_balance,
     currency,
     type,
     tags,
@@ -41,11 +42,12 @@ const createAccount = async (
     name: name,
     description: description,
     balance: balance || 0,
+    initial_balance: initial_balance || 0,
     currency: currency,
     type: type,
     tags: tags || null,
     color: color || 'red',
-    from: user._id,
+    created_by: user._id,
     shared_with: shared_with || [],
     transactions: [], // Array with id of traansactions
   };

@@ -5,7 +5,10 @@ import { User } from './user.interface';
 export interface Account {
   name: string;
   description: string;
+  initial_balance: number;
   balance: number;
+  total_expenses: number;
+  total_income: number;
   currency: CurrencyList; // peso, dolar, euro etc
   type: AccountList; // cash, bank, credit card
   tags: [string] | null;

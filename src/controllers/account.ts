@@ -12,6 +12,7 @@ import { handleHttp } from '../utils/error.handler';
 const getAllAccounts = async ({ user }: RequestExt, res: Response) => {
   try {
     const accountResponse = await findAllAccounts(user);
+    console.log(accountResponse);
     res.send(accountResponse);
   } catch (e) {
     handleHttp(res, 'ACCOUNT_NOT_FOUND', e);

@@ -1,3 +1,5 @@
+import { AccountList } from '../enums/account.enum';
+import { CurrencyList } from '../enums/currency.enum';
 import { User } from '../interfaces/user.interface';
 import CategoryModel from '../models/category';
 import UserModel from '../models/user';
@@ -19,7 +21,18 @@ const getMyUserData = async (id: string) => {
     { isSubCategory: false }
   ).populate([{ path: 'sub_category' }]);
   destructUser.my_categories = [...user_categories];
-  const user = destructUser;
+  const accountEnum = AccountList;
+  const currencyEnum = CurrencyList;
+  const accountList = Object.entries(currencyEnum).map(([_id, name]) => ({
+    _id,
+    name,
+  }));
+  const currencyList = Object.entries(accountEnum).map(([_id, name]) => ({
+    _id,
+    name,
+  }));
+  const appSettings = { accountList, currencyList };
+  const user = { user: destructUser, appSettings };
   return user;
 };
 
