@@ -14,7 +14,10 @@ const insertTransaction = async (transaction: Transaction, { user }: any) => {
   const newTransaction = { ...transaction, created_by: user._id };
   const responseInsert = await TransactionModel.create(newTransaction);
 
-  let allTransactions = await TransactionModel.find({ created_by: user._id });
+  let allTransactions = await TransactionModel.find({
+    created_by: user._id,
+    account: account_id,
+  });
   const { actual_balance, actual_incomes, actual_expenses } =
     updateBalance(allTransactions);
 
@@ -88,7 +91,10 @@ const updateTransactionData = async (
     new: true,
   });
   // Aaaaaand finally edit the value of account and return the transaccion moddified
-  let allTransactions = await TransactionModel.find({ created_by: user._id });
+  let allTransactions = await TransactionModel.find({
+    created_by: user._id,
+    account: account_id,
+  });
   const { actual_balance, actual_expenses, actual_incomes } =
     updateBalance(allTransactions);
   await accountResponse.update({
@@ -108,7 +114,10 @@ const deleteTransactionData = async (id: string, { user }: any) => {
   if (!accountResponse) return;
   responseTransaction = await responseTransaction.remove();
 
-  let allTransactions = await TransactionModel.find({ created_by: user._id });
+  let allTransactions = await TransactionModel.find({
+    created_by: user._id,
+    account: accountResponse._id,
+  });
   const { actual_balance, actual_expenses, actual_incomes } =
     updateBalance(allTransactions);
 
