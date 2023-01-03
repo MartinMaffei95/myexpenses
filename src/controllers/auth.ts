@@ -5,7 +5,12 @@ import { registerNewUser, loginUser } from '../services/auth.services';
 const registerController = async ({ body }: Request, res: Response) => {
   try {
     const responseUser = await registerNewUser(body);
-    res.send(responseUser);
+    if (responseUser === 'USERNAME_ALREADY_EXISTS') {
+      res.status(403);
+      res.send(responseUser);
+    } else {
+      res.send(responseUser);
+    }
   } catch (e) {
     handleHttp(res, 'ERROR_REGISTER', e);
   }
