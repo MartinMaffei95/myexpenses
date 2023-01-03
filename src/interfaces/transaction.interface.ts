@@ -1,4 +1,5 @@
 export interface Transaction {
+  _id: string;
   value: number;
   account: object; //ObjectId
   created_by: object; //ObjectId

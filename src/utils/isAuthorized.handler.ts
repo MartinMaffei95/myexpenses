@@ -13,8 +13,8 @@ const isAuthorized = async (
 
   // USER IS OWNER OF RESULT  ?
   if (mongoResult.created_by.toString() !== user_id) {
-    console.log(mongoResult.created_by.toString());
-    console.log(user_id);
+    // console.log(mongoResult.created_by.toString());
+    // console.log(user_id);
     throw new Error('YOU_DONT_HAVE_PERMISSIONS');
   }
 

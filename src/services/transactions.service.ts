@@ -72,35 +72,55 @@ const getTransactionByQuery = async (query: object, { user }: any) => {
 // };
 
 const updateTransactionData = async (
-  id: string,
-  transaction: Transaction,
+  id: string, //transaction id
+  transaction: Transaction, //edited transaction
   { user }: any
 ) => {
-  const account_id = transaction.account.toString();
-  //This check if the file exists in account collection and if the client - who send the request - have authorization to used
+  const account_id = transaction.account.toString(); // new account id
+
+  //This check if the file exists in account collection and if the client - who send the request - have authorization to use
   const accountResponse = await isAuthorized(
     AccountModel,
     account_id,
     user._id
-  );
+  ); //new account
+
   // Now check the same in the transaction
   let responseTransaction = await isAuthorized(TransactionModel, id, user._id); //=> old transaction
+  const oldAccountId = responseTransaction.account;
 
   //update the transaction and return them
-  responseTransaction = await responseTransaction.update(transaction, {
-    new: true,
+  responseTransaction = await TransactionModel.findByIdAndUpdate(
+    id,
+    transaction,
+    {
+      new: true,
+    }
+  );
+  // update balances of old account of transaction
+
+  let allTransactionsOfOldAccount = await TransactionModel.find({
+    created_by: user._id,
+    account: oldAccountId,
   });
-  // Aaaaaand finally edit the value of account and return the transaccion moddified
+  let transactionsOfOldAccount = updateBalance(allTransactionsOfOldAccount);
+  await AccountModel.findByIdAndUpdate(oldAccountId, {
+    balance: transactionsOfOldAccount.actual_balance,
+    total_expenses: transactionsOfOldAccount.actual_expenses,
+    total_income: transactionsOfOldAccount.actual_incomes,
+  });
+
+  // finally edit account and return the transaccion modified
   let allTransactions = await TransactionModel.find({
     created_by: user._id,
     account: account_id,
   });
-  const { actual_balance, actual_expenses, actual_incomes } =
-    updateBalance(allTransactions);
+
+  let transactionsOfNewAccount = updateBalance(allTransactions);
   await accountResponse.update({
-    balance: actual_balance,
-    total_expenses: actual_expenses,
-    total_income: actual_incomes,
+    balance: transactionsOfNewAccount.actual_balance,
+    total_expenses: transactionsOfNewAccount.actual_expenses,
+    total_income: transactionsOfNewAccount.actual_incomes,
   });
 
   return responseTransaction;

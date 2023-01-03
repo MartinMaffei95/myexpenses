@@ -42,8 +42,6 @@ const getQueryTransactions = async (
   res: Response
 ) => {
   try {
-    console.log('CONTROLLER : ', query);
-
     const response_transaction = await getTransactionByQuery(query, user);
     res.send(response_transaction);
   } catch (e) {

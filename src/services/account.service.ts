@@ -101,8 +101,6 @@ const deleteAccount = async ({ user }: any, id: string) => {
 
   //If the account have transaction then will be deleted
   let transactionsToDelete = accountResponse.transactions;
-  console.log(accountResponse);
-  console.log(accountResponse.transactions);
 
   if (transactionsToDelete && transactionsToDelete.length > 0) {
     for (let i = 0; i < transactionsToDelete.length; i++) {
