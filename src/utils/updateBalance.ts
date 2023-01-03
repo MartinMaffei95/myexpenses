@@ -1,6 +1,7 @@
 import { Transaction } from '../interfaces/transaction.interface';
 
-const updateBalance = (allTransactions: Transaction[]) => {
+const updateBalance = (allTransactions: Transaction[], init?: number) => {
+  let initial_balance = init || 0;
   let balance = 0;
   let total_incomes = 0;
   let total_expenses = 0;
@@ -17,7 +18,7 @@ const updateBalance = (allTransactions: Transaction[]) => {
     }
   });
   return {
-    actual_balance: balance,
+    actual_balance: balance + initial_balance,
     actual_incomes: total_incomes,
     actual_expenses: total_expenses,
   };

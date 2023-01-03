@@ -19,6 +19,9 @@ const findAccountById = async ({ user }: any, id: string) => {
   let accountResponse = await isAuthorized(AccountModel, id, user._id);
   accountResponse = await accountResponse.populate({
     path: 'transactions',
+    populate: {
+      path: 'category',
+    },
   });
 
   return accountResponse;

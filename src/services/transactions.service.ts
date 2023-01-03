@@ -99,11 +99,15 @@ const updateTransactionData = async (
   );
   // update balances of old account of transaction
 
+  let oldAccount = await AccountModel.findById(oldAccountId);
   let allTransactionsOfOldAccount = await TransactionModel.find({
     created_by: user._id,
     account: oldAccountId,
   });
-  let transactionsOfOldAccount = updateBalance(allTransactionsOfOldAccount);
+  let transactionsOfOldAccount = updateBalance(
+    allTransactionsOfOldAccount,
+    oldAccount?.initial_balance
+  );
   await AccountModel.findByIdAndUpdate(oldAccountId, {
     balance: transactionsOfOldAccount.actual_balance,
     total_expenses: transactionsOfOldAccount.actual_expenses,
@@ -116,7 +120,10 @@ const updateTransactionData = async (
     account: account_id,
   });
 
-  let transactionsOfNewAccount = updateBalance(allTransactions);
+  let transactionsOfNewAccount = updateBalance(
+    allTransactions,
+    accountResponse.initial_balance
+  );
   await accountResponse.update({
     balance: transactionsOfNewAccount.actual_balance,
     total_expenses: transactionsOfNewAccount.actual_expenses,

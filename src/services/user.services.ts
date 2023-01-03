@@ -23,11 +23,11 @@ const getMyUserData = async (id: string) => {
   destructUser.my_categories = [...user_categories];
   const accountEnum = AccountList;
   const currencyEnum = CurrencyList;
-  const accountList = Object.entries(currencyEnum).map(([_id, name]) => ({
+  const accountList = Object.entries(accountEnum).map(([_id, name]) => ({
     _id,
     name,
   }));
-  const currencyList = Object.entries(accountEnum).map(([_id, name]) => ({
+  const currencyList = Object.entries(currencyEnum).map(([_id, name]) => ({
     _id,
     name,
   }));
