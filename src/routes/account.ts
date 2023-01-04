@@ -13,7 +13,7 @@ const router = Router();
 /**
  * Post track
  * @openapi
- * /accounts/all:
+ * /account/all:
  *    get:
  *      tags:
  *        - Accounts
@@ -67,7 +67,7 @@ router.get('/all', checkJWT, getAllAccounts);
 /**
  * Post track
  * @openapi
- * /accounts/{id}:
+ * /account/{id}:
  *    get:
  *      tags:
  *        - Accounts
@@ -120,7 +120,7 @@ router.get('/:id', checkJWT, getAccountData);
 /**
  * Post track
  * @openapi
- * /accounts/:
+ * /account/:
  *    post:
  *      tags:
  *        - Accounts
@@ -185,7 +185,7 @@ router.post('/', checkJWT, createNewAccount);
 /**
  * Post track
  * @openapi
- * /accounts/{id}:
+ * /account/{id}:
  *    put:
  *      tags:
  *        - Accounts
@@ -244,7 +244,7 @@ router.put('/:id', checkJWT, updateAccountData);
 /**
  * Post track
  * @openapi
- * /accounts/{id}:
+ * /account/{id}:
  *    delete:
  *      tags:
  *        - Accounts

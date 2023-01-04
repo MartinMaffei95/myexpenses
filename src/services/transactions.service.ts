@@ -18,8 +18,10 @@ const insertTransaction = async (transaction: Transaction, { user }: any) => {
     created_by: user._id,
     account: account_id,
   });
-  const { actual_balance, actual_incomes, actual_expenses } =
-    updateBalance(allTransactions);
+  const { actual_balance, actual_incomes, actual_expenses } = updateBalance(
+    allTransactions,
+    accountResponse.initial_balance
+  );
 
   await accountResponse.update({
     balance: actual_balance,
@@ -145,8 +147,10 @@ const deleteTransactionData = async (id: string, { user }: any) => {
     created_by: user._id,
     account: accountResponse._id,
   });
-  const { actual_balance, actual_expenses, actual_incomes } =
-    updateBalance(allTransactions);
+  const { actual_balance, actual_expenses, actual_incomes } = updateBalance(
+    allTransactions,
+    accountResponse.initial_balance
+  );
 
   await accountResponse.update({
     balance: actual_balance,

@@ -10,6 +10,9 @@ const findAllAccounts = async ({ user }: any) => {
     created_by: _id,
   }).populate({
     path: 'transactions',
+    populate: {
+      path: 'category',
+    },
   });
   return accountResponse;
 };
@@ -44,7 +47,7 @@ const createAccount = async (
   const account = {
     name: name,
     description: description,
-    balance: balance || 0,
+    balance: initial_balance || 0,
     initial_balance: initial_balance || 0,
     currency: currency,
     type: type,
