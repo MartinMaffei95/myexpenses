@@ -10,6 +10,58 @@ import { checkJWT } from '../middleware/session';
 
 const router = Router();
 
+/**
+ * Post track
+ * @openapi
+ * /accounts/all:
+ *    get:
+ *      tags:
+ *        - Accounts
+ *      summary: "Get all my accounts data by Id"
+ *      description: Get a account data using parameterid.
+ *      parameters:
+ *        - in: path
+ *          name: id
+ *          schema:
+ *            type: string
+ *          required: true
+ *          description: ID of the account to get
+ *      responses:
+ *        '200':
+ *          description: Return a object with account data.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: array
+ *                items:
+ *                  $ref: "#/components/schemas/account"
+ *        '401':
+ *          description: The token is invalid or missing.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "INVALID_SESSION"
+ *        '403':
+ *          description: The user who send request is not the owner of account .
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "YOU_DONT_HAVE_PERMISSIONS"
+ *        '404':
+ *          description: Not find the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ACCOUNT_NOT_FOUND"
+ *        '500':
+ *          description: Internal server error.
+ *      security:
+ *        - bearerAuth: []
+ */
+
 router.get('/all', checkJWT, getAllAccounts);
 
 /**
@@ -36,16 +88,33 @@ router.get('/all', checkJWT, getAllAccounts);
  *              schema:
  *                type: object
  *                $ref: "#/components/schemas/account"
+ *        '401':
+ *          description: The token is invalid or missing.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "INVALID_SESSION"
+ *        '403':
+ *          description: The user who send request is not the owner of account .
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "YOU_DONT_HAVE_PERMISSIONS"
  *        '404':
- *          description: Have a error creating the user.
+ *          description: Not find the user.
  *          content:
  *            application/json:
  *              schema:
  *                type: string
  *              example: "ACCOUNT_NOT_FOUND"
+ *        '500':
+ *          description: Internal server error.
  *      security:
  *        - bearerAuth: []
  */
+
 router.get('/:id', checkJWT, getAccountData);
 
 /**
@@ -85,13 +154,29 @@ router.get('/:id', checkJWT, getAccountData);
  *              schema:
  *                type: object
  *                $ref: "#/components/schemas/account"
- *        '404':
- *          description: Have a error creating the user.
+ *        '401':
+ *          description: The token is invalid or missing.
  *          content:
  *            application/json:
  *              schema:
  *                type: string
- *              example: "ERROR_CREATING_ACCOUNT"
+ *              example: "INVALID_SESSION"
+ *        '403':
+ *          description: The user who send request is not the owner of account .
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "YOU_DONT_HAVE_PERMISSIONS"
+ *        '404':
+ *          description: Not find the user.
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: string
+ *              example: "ACCOUNT_NOT_FOUND"
+ *        '500':
+ *          description: Internal server error.
  *      security:
  *        - bearerAuth: []
  */
@@ -113,7 +198,7 @@ router.post('/', checkJWT, createNewAccount);
  *          required: true
  *          description: ID of the account to get
  *      requestBody:
- *          description: Object with data for account.
+ *          description: Object with data for account. If you do not want to modify any of the fields, do not send them
  *          required: true
  *          content:
  *            application/json:
@@ -126,12 +211,15 @@ router.post('/', checkJWT, createNewAccount);
  *                    type: string
  *                  balance:
  *                    type: number
+ *                  initial_balance:
+ *                    type: number
  *                  currency:
  *                    type: string
  *                  type:
  *                    type: string
  *                  color:
  *                    type: string
+
  *      responses:
  *        '200':
  *          description: Return a object with account data.
@@ -140,8 +228,9 @@ router.post('/', checkJWT, createNewAccount);
  *              schema:
  *                type: object
  *                $ref: "#/components/schemas/account"
- *        '404':
- *          description: Have a error creating the user.
+ *                
+ *        '500':
+ *          description: Internal server error.
  *          content:
  *            application/json:
  *              schema:
@@ -170,13 +259,9 @@ router.put('/:id', checkJWT, updateAccountData);
  *      responses:
  *        '200':
  *          description: Return a string with account data.
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                $ref: "#/components/schemas/account"
- *        '404':
- *          description: Have a error creating the user.
+
+ *        '500':
+ *          description: Internal server error.
  *          content:
  *            application/json:
  *              schema:

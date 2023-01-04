@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
+import { handleHttp } from '../utils/error.handler';
 import { verifyToken } from '../utils/jwt.handle';
 import { userExists } from '../utils/userExists.handler';
 
@@ -13,12 +14,10 @@ const checkJWT = async (req: RequestExt, res: Response, next: NextFunction) => {
     const jwt = jwtByUser.split(' ').pop();
     const isUser = await verifyToken(`${jwt}`);
     if (!isUser) {
-      res.status(401);
-      res.send('INVALID_SESSION');
+      handleHttp(res, 'INVALID_SESSION', { error: 'INVALID_SESSION' });
     } else {
       if (await !userExists(isUser)) {
-        res.status(401);
-        res.send('USER_NOT_EXIST');
+        handleHttp(res, 'USER_NOT_EXIST', { error: 'USER_NOT_EXIST' });
       } else {
         req.user = isUser;
         next();
@@ -26,8 +25,7 @@ const checkJWT = async (req: RequestExt, res: Response, next: NextFunction) => {
     }
   } catch (e) {
     console.log(e);
-    res.status(400);
-    res.send('TOKEN_EMPTY');
+    handleHttp(res, 'TOKEN_EMPTY', { error: 'TOKEN_EMPTY' });
   }
 };
 

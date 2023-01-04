@@ -13,8 +13,10 @@ const getAllAccounts = async ({ user }: RequestExt, res: Response) => {
   try {
     const accountResponse = await findAllAccounts(user);
     res.send(accountResponse);
-  } catch (e) {
-    handleHttp(res, 'ACCOUNT_NOT_FOUND', e);
+  } catch (e: any) {
+    if (e.message === 'RESULT_NOT_FOUND')
+      handleHttp(res, 'ACCOUNT_NOT_FOUND', e);
+    else handleHttp(res, e.message, e);
   }
 };
 
@@ -23,8 +25,10 @@ const getAccountData = async ({ user, params }: RequestExt, res: Response) => {
   try {
     const accountResponse = await findAccountById(user, id);
     res.send(accountResponse);
-  } catch (e) {
-    handleHttp(res, 'ACCOUNT_NOT_FOUND', e);
+  } catch (e: any) {
+    if (e.message === 'RESULT_NOT_FOUND')
+      handleHttp(res, 'ACCOUNT_NOT_FOUND', e);
+    else handleHttp(res, e.message, e);
   }
 };
 

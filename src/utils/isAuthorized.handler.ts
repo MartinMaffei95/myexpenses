@@ -8,7 +8,7 @@ const isAuthorized = async (
   // FIND A RESULT?
   const mongoResult = await model.findById(model_id);
   if (!mongoResult) {
-    throw new Error('ACCOUNT_NOT_FOUND');
+    throw new Error('RESULT_NOT_FOUND');
   }
 
   // USER IS OWNER OF RESULT  ?

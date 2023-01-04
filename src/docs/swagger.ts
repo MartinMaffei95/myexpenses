@@ -74,19 +74,24 @@ const swaggerDefinition: OAS3Definition = {
       account: {
         type: 'object',
         properties: {
+          _id: { type: 'string' },
           name: { type: 'string' },
           description: { type: 'string' },
           balance: { type: 'number' },
+          total_expenses: { type: 'number' },
+          total_income: { type: 'number' },
+          initial_balance: { type: 'number' },
           currency: { type: 'string' },
           type: { type: 'string' },
           tags: {
             type: 'array',
+            nullable: true,
             items: {
               type: 'string',
             },
           },
           color: { type: 'string' },
-          from: { type: 'string' },
+          created_by: { type: 'string' },
           shared_with: {
             type: 'array',
             items: {
@@ -96,7 +101,7 @@ const swaggerDefinition: OAS3Definition = {
           transactions: {
             type: 'array',
             items: {
-              type: 'string',
+              $ref: '#/components/schemas/transaction',
             },
           },
           createdAt: { type: 'string' },
