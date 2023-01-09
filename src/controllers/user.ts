@@ -5,6 +5,7 @@ import {
   editMyUserData,
   changeMyPassword,
   deleteMyUser,
+  createCategory,
 } from '../services/user.services';
 import { handleHttp } from '../utils/error.handler';
 
@@ -12,6 +13,7 @@ const getUser = async ({ params }: Request, res: Response) => {
   try {
     const { id } = params;
     const userData = await getMyUserData(id);
+    console.log(userData);
     res.send(userData);
   } catch (e) {
     handleHttp(res, 'USER_NOT_FOUND', e);
@@ -54,4 +56,14 @@ const deleteUser = async (
   }
 };
 
-export { getUser, editUser, changePassword, deleteUser };
+const addCategory = async ({ body, user }: RequestExt, res: Response) => {
+  try {
+    const categoryData = await createCategory(body, user);
+    console.log(categoryData);
+    res.send(categoryData);
+  } catch (e) {
+    handleHttp(res, 'ERROR_CREATING_CATEGORIES', e);
+  }
+};
+
+export { getUser, editUser, changePassword, deleteUser, addCategory };

@@ -3,7 +3,7 @@ export interface Category {
   name: string;
   icon: string | null;
   public: boolean;
-  from?: string;
+  created_by?: string;
   sub_category: Category[] | null | string[] | object[];
   isSubCategory: boolean;
 }

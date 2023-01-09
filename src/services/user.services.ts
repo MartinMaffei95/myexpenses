@@ -1,5 +1,7 @@
+import { Types } from 'mongoose';
 import { AccountList } from '../enums/account.enum';
 import { CurrencyList } from '../enums/currency.enum';
+import { Category } from '../interfaces/category.interface';
 import { User } from '../interfaces/user.interface';
 import CategoryModel from '../models/category';
 import UserModel from '../models/user';
@@ -14,12 +16,10 @@ const getMyUserData = async (id: string) => {
   if (!userData) throw new Error('USER_NOT_FOUND');
 
   const destructUser = userData.toObject();
-  const user_categories = await CategoryModel.find(
-    {
-      $or: [{ from: id }, { public: true }],
-    },
-    { isSubCategory: false }
-  ).populate([{ path: 'sub_category' }]);
+  const user_categories = await CategoryModel.find({
+    $or: [{ created_by: id }, { public: true }],
+  }).populate([{ path: 'sub_category' }]);
+  console.log(user_categories);
   destructUser.my_categories = [...user_categories];
   const accountEnum = AccountList;
   const currencyEnum = CurrencyList;
@@ -32,6 +32,7 @@ const getMyUserData = async (id: string) => {
     name,
   }));
   const appSettings = { accountList, currencyList };
+  console.log(destructUser);
   const user = { user: destructUser, appSettings };
   return user;
 };
@@ -117,4 +118,66 @@ const deleteMyUser = async ({ password }: any, { user }: any, id: string) => {
   }
 };
 
-export { getMyUserData, editMyUserData, changeMyPassword, deleteMyUser };
+const createCategory = async (category: Category, { user }: any) => {
+  if (category.sub_category === null || category.sub_category.length <= 0) {
+    // create a category
+    const newCategory = new CategoryModel({
+      name: category.name,
+      icon: category.icon,
+      created_by: user._id,
+      public: false,
+      sub_category: null,
+      isSubCategory: category.isSubCategory,
+    });
+    const responseCategory = await newCategory.save();
+    return responseCategory;
+  } else {
+    const subCategories = category.sub_category;
+    const fatherCategoryId = new Types.ObjectId();
+
+    //Create all categories and save a array with: CategoryObjects
+    // and other with Categorys Ids
+    let arrayOfCategories = [];
+    let arrayOfCategoriesId = [];
+    for (let i = 0; i < subCategories.length; i++) {
+      const subCategory = subCategories[i] as Category;
+
+      const scId = new Types.ObjectId();
+      const sc = {
+        _id: scId,
+        name: subCategory.name,
+        icon: subCategory.icon,
+        public: false,
+        sub_category: null,
+        isSubCategory: true,
+        created_by: user._id,
+      };
+      arrayOfCategoriesId.push(scId);
+      arrayOfCategories.push(sc);
+    }
+    // Now create the category father of all sub categories
+    // and save array subCategoriesId(strings)
+    const fatherCategory = new CategoryModel({
+      _id: fatherCategoryId,
+      name: category.name,
+      icon: category.icon,
+      public: false,
+      sub_category: arrayOfCategoriesId,
+      isSubCategory: false,
+      created_by: user._id,
+    });
+
+    // Now use insterMany with array of subcategories(Objects)
+    await CategoryModel.insertMany(arrayOfCategories);
+    const categoryResponse = await fatherCategory.save();
+    return categoryResponse;
+  }
+};
+
+export {
+  getMyUserData,
+  editMyUserData,
+  changeMyPassword,
+  deleteMyUser,
+  createCategory,
+};

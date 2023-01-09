@@ -11,7 +11,7 @@ const CategorySchema = new Schema<Category>(
     name: {
       type: 'string',
     },
-    from: {
+    created_by: {
       type: Schema.Types.ObjectId,
     },
     icon: {
