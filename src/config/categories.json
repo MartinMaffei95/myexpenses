@@ -2,7 +2,7 @@
   {
     "_id": "1",
     "name": "Transport",
-    "icon": null,
+    "icon": "FaRoad",
     "public": true,
     "sub_category": ["11", "12"],
     "isSubCategory": false
@@ -10,7 +10,7 @@
   {
     "_id": "11",
     "name": "Taxi",
-    "icon": null,
+    "icon": "FaTaxi",
     "public": true,
     "sub_category": null,
     "isSubCategory": true
@@ -18,7 +18,7 @@
   {
     "_id": "12",
     "name": "Bus",
-    "icon": null,
+    "icon": "FaBus",
     "public": true,
     "sub_category": null,
     "isSubCategory": true
@@ -26,7 +26,7 @@
   {
     "_id": "2",
     "name": "Food",
-    "icon": null,
+    "icon": "FaHamburger",
     "public": true,
     "sub_category": ["21", "22", "23"],
     "isSubCategory": false
@@ -34,7 +34,7 @@
   {
     "_id": "3",
     "name": "Other income",
-    "icon": null,
+    "icon": "FaPiggyBank",
     "public": true,
     "sub_category": null,
     "isSubCategory": false
@@ -42,7 +42,7 @@
   {
     "_id": "4",
     "name": "Taxes",
-    "icon": null,
+    "icon": "FaFileInvoiceDollar",
     "public": true,
     "sub_category": null,
     "isSubCategory": false
@@ -50,7 +50,7 @@
   {
     "_id": "21",
     "name": "Bar",
-    "icon": null,
+    "icon": "FaGlassWhiskey",
     "public": true,
     "sub_category": null,
     "isSubCategory": true
@@ -58,7 +58,7 @@
   {
     "_id": "22",
     "name": "Supermarket",
-    "icon": null,
+    "icon": "FaShoppingBasket",
     "public": true,
     "sub_category": null,
     "isSubCategory": true
@@ -66,7 +66,15 @@
   {
     "_id": "23",
     "name": "Restourant",
-    "icon": null,
+    "icon": "FaUtensils",
+    "public": true,
+    "sub_category": null,
+    "isSubCategory": true
+  },
+  {
+    "_id": "999",
+    "name": "Other",
+    "icon": "FaHandHoldingUsd",
     "public": true,
     "sub_category": null,
     "isSubCategory": true

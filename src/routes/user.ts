@@ -4,7 +4,6 @@ import {
   deleteUser,
   editUser,
   getUser,
-  addCategory,
 } from '../controllers/user';
 
 import { checkJWT } from '../middleware/session';
@@ -196,40 +195,5 @@ router.put('/:id/changePass', checkJWT, changePassword);
  *        - bearerAuth: []
  */
 router.delete('/:id', checkJWT, deleteUser);
-
-/**
- * Post track
- * @openapi
- * /user/{id}:
- *    get:
- *      tags:
- *        - Users
- *      summary: "Get a user data by id"
- *      parameters:
- *        - in: path
- *          name: id
- *          schema:
- *            type: string
- *          required: true
- *          description: ID of the account to get
- *      responses:
- *        '200':
- *          description: Return a object with account data.
- *          content:
- *            application/json:
- *              schema:
- *                type: object
- *                $ref: "#/components/schemas/account"
- *        '404':
- *          description: Have a error creating the user.
- *          content:
- *            application/json:
- *              schema:
- *                type: string
- *              example: "ERROR_DELETING_USER"
- *      security:
- *        - bearerAuth: []
- */
-router.post('/:id/addCategory', checkJWT, addCategory);
 
 export { router };
