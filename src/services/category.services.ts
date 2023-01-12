@@ -136,7 +136,7 @@ const deleteOneCategory = async ({ user }: any, id: string) => {
     // return 'USER_DELETED';
   } catch (e) {
     console.log('errrrr1 ==>> ', e);
-    throw new Error('ERROR_DELETING');
+    throw new Error('ERROR_DELETING_CATEGORY');
   }
 };
 

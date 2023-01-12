@@ -108,6 +108,25 @@ const swaggerDefinition: OAS3Definition = {
           updatedAt: { type: 'string' },
         },
       },
+      category: {
+        type: 'object',
+        properties: {
+          _id: { type: 'string' },
+          name: { type: 'string' },
+          icon: { type: 'string' },
+          public: { type: 'string' },
+          created_by: { type: 'string' },
+          sub_category: {
+            type: 'array',
+            items: {
+              $ref: '#/components/schemas/category',
+            },
+          },
+          isSubCategory: { type: 'boolean' },
+          createdAt: { type: 'string' },
+          updatedAt: { type: 'string' },
+        },
+      },
     },
   },
 };

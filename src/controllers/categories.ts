@@ -25,7 +25,7 @@ const editCategory = async (
     const userData = await editCategoryData(body, user, id);
     res.send(userData);
   } catch (e) {
-    handleHttp(res, 'ERROR_UPDATING_USER', e);
+    handleHttp(res, 'ERROR_UPDATING_CATEGORIES', e);
   }
 };
 
@@ -33,9 +33,9 @@ const deleteCategory = async ({ user, params }: RequestExt, res: Response) => {
   try {
     const { id } = params;
     const userData = await deleteOneCategory(user, id);
-    res.send(userData);
+    res.send('CATEGORY_DELETED');
   } catch (e) {
-    handleHttp(res, 'ERROR_DELETING_USER', e);
+    handleHttp(res, 'ERROR_DELETING_CATEGORY', e);
   }
 };
 
