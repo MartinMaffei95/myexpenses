@@ -10,7 +10,6 @@ import { handleHttp } from '../utils/error.handler';
 const addCategory = async ({ body, user }: RequestExt, res: Response) => {
   try {
     const categoryData = await createCategory(body, user);
-    console.log(categoryData);
     res.send(categoryData);
   } catch (e) {
     handleHttp(res, 'ERROR_CREATING_CATEGORIES', e);

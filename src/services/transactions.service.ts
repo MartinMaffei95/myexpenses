@@ -48,7 +48,6 @@ const getAllTransactions = async ({ user }: any) => {
     },
   ]);
 
-  console.log('transactions: ', responseTransactions);
   return responseTransactions;
 };
 

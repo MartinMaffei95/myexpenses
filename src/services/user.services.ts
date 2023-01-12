@@ -19,7 +19,6 @@ const getMyUserData = async (id: string) => {
   const user_categories = await CategoryModel.find({
     $or: [{ created_by: id }, { public: true }],
   }).populate([{ path: 'sub_category' }]);
-  console.log(user_categories);
   destructUser.my_categories = [...user_categories];
   const accountEnum = AccountList;
   const currencyEnum = CurrencyList;
@@ -32,7 +31,6 @@ const getMyUserData = async (id: string) => {
     name,
   }));
   const appSettings = { accountList, currencyList };
-  console.log(destructUser);
   const user = { user: destructUser, appSettings };
   return user;
 };
@@ -113,7 +111,6 @@ const deleteMyUser = async ({ password }: any, { user }: any, id: string) => {
     await userData.remove();
     return 'USER_DELETED';
   } catch (e) {
-    console.log(e);
     throw new Error('ERROR_DELETING');
   }
 };

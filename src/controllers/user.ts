@@ -12,7 +12,6 @@ const getUser = async ({ params }: Request, res: Response) => {
   try {
     const { id } = params;
     const userData = await getMyUserData(id);
-    console.log(userData);
     res.send(userData);
   } catch (e) {
     handleHttp(res, 'USER_NOT_FOUND', e);

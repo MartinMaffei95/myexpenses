@@ -58,7 +58,6 @@ const createQuery = (query: object) => {
     }
   }
 
-  // console.log(mongooseQuery);
   return mongooseQuery;
 };
 export { createQuery };

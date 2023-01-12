@@ -24,7 +24,6 @@ const checkJWT = async (req: RequestExt, res: Response, next: NextFunction) => {
       }
     }
   } catch (e) {
-    console.log(e);
     handleHttp(res, 'TOKEN_EMPTY', { error: 'TOKEN_EMPTY' });
   }
 };

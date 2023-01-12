@@ -99,10 +99,10 @@ const deleteOneCategory = async ({ user }: any, id: string) => {
       categoryData.sub_category.length > 0
     ) {
       const subCat = categoryData.sub_category;
-      console.log(subCat);
+      console.log('subCat ==>> ', subCat);
       for (let i = 0; i < subCat.length; i++) {
-        const sc = subCat[i] as Category;
-        console.log(sc);
+        const sc = subCat[i] as string;
+        console.log('subCat1 ==>> ', sc);
         await TransactionModel.updateMany(
           //Find all transactions with that category
           {
@@ -114,7 +114,8 @@ const deleteOneCategory = async ({ user }: any, id: string) => {
             category: '999',
           }
         );
-        await CategoryModel.findByIdAndRemove(sc._id);
+        console.log('subCat2 ==>> ', sc);
+        await CategoryModel.findByIdAndRemove(sc);
       }
     }
 
@@ -134,7 +135,7 @@ const deleteOneCategory = async ({ user }: any, id: string) => {
     return delCategoryResponse;
     // return 'USER_DELETED';
   } catch (e) {
-    console.log(e);
+    console.log('errrrr1 ==>> ', e);
     throw new Error('ERROR_DELETING');
   }
 };
