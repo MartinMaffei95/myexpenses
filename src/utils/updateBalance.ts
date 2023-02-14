@@ -1,6 +1,11 @@
+import { Account } from './../interfaces/account.interface';
 import { Transaction } from '../interfaces/transaction.interface';
 
-const updateBalance = (allTransactions: Transaction[], init?: number) => {
+const updateBalance = (
+  allTransactions: Transaction[],
+  init?: number,
+  accountToUpdate?: string
+) => {
   let initial_balance = init || 0;
   let balance = 0;
   let total_incomes = 0;
@@ -15,6 +20,18 @@ const updateBalance = (allTransactions: Transaction[], init?: number) => {
         total_incomes += transaction.value;
         balance += transaction.value;
         break;
+      case 'TRANSFERENCE':
+        console.log(transaction.from, accountToUpdate);
+
+        if (transaction.from === accountToUpdate) {
+          total_expenses -= transaction.value;
+          balance += transaction.value;
+          break;
+        } else {
+          total_incomes += transaction.value;
+          balance -= transaction.value;
+          break;
+        }
     }
   });
   return {

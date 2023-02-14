@@ -5,6 +5,7 @@ import {
   getTransactions,
   postTransaction,
   updateTransaction,
+  makeTransference,
 } from '../controllers/transaction';
 import { checkJWT } from '../middleware/session';
 
@@ -188,6 +189,7 @@ router.get('/?', checkJWT, getQueryTransactions);
  */
 router.post('/', checkJWT, postTransaction);
 
+router.post('/transfer', checkJWT, makeTransference);
 /**
  * Post track
  * @openapi

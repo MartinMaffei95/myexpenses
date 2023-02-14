@@ -8,12 +8,14 @@ import { updateBalance } from '../utils/updateBalance';
 const insertTransaction = async (transaction: Transaction, { user }: any) => {
   const account_id = transaction.account.toString();
 
-  //This check if the file exists in collectionDb and if the client - who send the request - have authorization to used
+  //This check if the file exists in collectionDb and if the client - who send the request - have authorization to use
   let accountResponse = await isAuthorized(AccountModel, account_id, user._id);
 
+  // Create and save transaction
   const newTransaction = { ...transaction, created_by: user._id };
   const responseInsert = await TransactionModel.create(newTransaction);
 
+  // Now update account balance
   let allTransactions = await TransactionModel.find({
     created_by: user._id,
     account: account_id,
@@ -161,10 +163,99 @@ const deleteTransactionData = async (id: string, { user }: any) => {
   return responseTransaction;
 };
 
+const transferTransaction = async (transaction: Transaction, { user }: any) => {
+  const from_account_id = transaction?.from?.toString();
+  const to_account_id = transaction?.to?.toString();
+
+  //This check if the account exists in collectionDb and if the client - who send the request - have authorization to use
+  if (!from_account_id || !to_account_id) {
+    throw new Error('THE ACCOUNT NO EXIST');
+  }
+  // ## FROM ACCOUNT
+  let fromAccountResponse = await isAuthorized(
+    AccountModel,
+    from_account_id,
+    user._id
+  );
+  // ## TO ACCOUNT
+  let toAccountResponse = await isAuthorized(
+    AccountModel,
+    to_account_id,
+    user._id
+  );
+
+  // Create transactions
+  const fromTransaction = {
+    ...transaction,
+    account: from_account_id,
+    created_by: user._id,
+  };
+  const toTransaction = {
+    ...transaction,
+    account: to_account_id,
+    created_by: user._id,
+  };
+  const responseFromTransaction = await TransactionModel.create(
+    fromTransaction
+  );
+  const responseToTransaction = await TransactionModel.create(toTransaction);
+
+  // Get all transactions of accounts
+  let allTransactions_from_account = await TransactionModel.find({
+    created_by: user._id,
+    account: from_account_id,
+  });
+
+  let allTransactions_to_account = await TransactionModel.find({
+    created_by: user._id,
+    account: to_account_id,
+  });
+
+  // Update the balances of accounts
+  // ## FROM account NEW BALANCE
+  const actual_from = updateBalance(
+    allTransactions_from_account,
+    fromAccountResponse.initial_balance,
+    from_account_id
+  );
+  // ## TO account NEW BALANCE
+  const actual_to = updateBalance(
+    allTransactions_to_account,
+    toAccountResponse.initial_balance,
+    to_account_id
+  );
+
+  // Update accounts balances and push the transaction
+
+  // ## FROM ACCOUNT
+
+  await fromAccountResponse.update({
+    balance: actual_from.actual_balance,
+    total_expenses: actual_from.actual_expenses,
+    total_income: actual_from.actual_incomes,
+    $push: { transactions: responseFromTransaction._id },
+  });
+
+  // ## TO ACCOUNT
+
+  await toAccountResponse.update({
+    balance: actual_to.actual_balance,
+    total_expenses: actual_to.actual_expenses,
+    total_income: actual_to.actual_incomes,
+    $push: { transactions: responseToTransaction._id },
+  });
+
+  // Return data of two new transactions
+  return {
+    to_transference: responseToTransaction,
+    from_transference: responseFromTransaction,
+  };
+};
 export {
   insertTransaction,
   getAllTransactions,
   getTransactionByQuery,
   updateTransactionData,
   deleteTransactionData,
+  transferTransaction,
 };

@@ -13,6 +13,14 @@ const TransactionSchema = new Schema<Transaction>(
       required: true,
       ref: 'accounts',
     },
+    from: {
+      type: Schema.Types.ObjectId,
+      ref: 'accounts',
+    },
+    to: {
+      type: Schema.Types.ObjectId,
+      ref: 'accounts',
+    },
     created_by: {
       type: Schema.Types.ObjectId,
       required: true,
@@ -34,7 +42,7 @@ const TransactionSchema = new Schema<Transaction>(
     type: {
       type: String,
       required: true,
-      enum: ['ADDITION', 'SUBSTRACTION'],
+      enum: ['ADDITION', 'SUBSTRACTION', 'TRANSFERENCE'],
     },
   },
   {

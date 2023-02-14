@@ -7,6 +7,7 @@ const isAuthorized = async (
 ) => {
   // FIND A RESULT?
   const mongoResult = await model.findById(model_id);
+  console.log(mongoResult, model_id);
   if (!mongoResult) {
     throw new Error('RESULT_NOT_FOUND');
   }

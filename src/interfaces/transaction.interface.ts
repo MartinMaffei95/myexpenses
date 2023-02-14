@@ -6,5 +6,7 @@ export interface Transaction {
   category: object | string; //ObjectId
   comment: string | undefined;
   transaction_date: string;
-  type: 'ADDITION' | 'SUBSTRACTION';
+  type: 'ADDITION' | 'SUBSTRACTION' | 'TRANSFERENCE';
+  from?: object;
+  to?: object;
 }

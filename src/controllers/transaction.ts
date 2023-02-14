@@ -6,6 +6,7 @@ import {
   getTransactionByQuery,
   updateTransactionData,
   deleteTransactionData,
+  transferTransaction,
 } from '../services/transactions.service';
 import { handleHttp } from '../utils/error.handler';
 
@@ -75,10 +76,20 @@ const deleteTransaction = async (
   }
 };
 
+const makeTransference = async ({ body, user }: RequestExt, res: Response) => {
+  try {
+    const response_transaction = await transferTransaction(body, user);
+    res.send(response_transaction);
+  } catch (e) {
+    handleHttp(res, 'ERROR_POST_TRANSACTION', e);
+  }
+};
+
 export {
   getTransactions,
   getQueryTransactions,
   postTransaction,
   updateTransaction,
   deleteTransaction,
+  makeTransference,
 };
