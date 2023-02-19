@@ -1,9 +1,9 @@
-import { Transaction } from '../interfaces/transaction.interface';
-import AccountModel from '../models/account';
-import TransactionModel from '../models/transaction';
-import { createQuery } from '../utils/createQuery.handler';
-import { isAuthorized } from '../utils/isAuthorized.handler';
-import { updateBalance } from '../utils/updateBalance';
+import { Transaction } from "../interfaces/transaction.interface";
+import AccountModel from "../models/account";
+import TransactionModel from "../models/transaction";
+import { createQuery } from "../utils/createQuery.handler";
+import { isAuthorized } from "../utils/isAuthorized.handler";
+import { updateBalance } from "../utils/updateBalance";
 
 const insertTransaction = async (transaction: Transaction, { user }: any) => {
   const account_id = transaction.account.toString();
@@ -12,7 +12,12 @@ const insertTransaction = async (transaction: Transaction, { user }: any) => {
   let accountResponse = await isAuthorized(AccountModel, account_id, user._id);
 
   // Create and save transaction
-  const newTransaction = { ...transaction, created_by: user._id };
+  const newTransaction = {
+    ...transaction,
+    from: null,
+    to: null,
+    created_by: user._id,
+  };
   const responseInsert = await TransactionModel.create(newTransaction);
 
   // Now update account balance
@@ -40,13 +45,13 @@ const getAllTransactions = async ({ user }: any) => {
     created_by: _id,
   }).populate([
     {
-      path: 'category',
+      path: "category",
       populate: {
-        path: 'sub_category',
+        path: "sub_category",
       },
     },
     {
-      path: 'account created_by',
+      path: "account created_by",
     },
   ]);
 
@@ -169,7 +174,7 @@ const transferTransaction = async (transaction: Transaction, { user }: any) => {
 
   //This check if the account exists in collectionDb and if the client - who send the request - have authorization to use
   if (!from_account_id || !to_account_id) {
-    throw new Error('THE ACCOUNT NO EXIST');
+    throw new Error("THE ACCOUNT NO EXIST");
   }
   // ## FROM ACCOUNT
   let fromAccountResponse = await isAuthorized(

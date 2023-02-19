@@ -1,5 +1,5 @@
-import { sign, verify } from 'jsonwebtoken';
-import 'dotenv/config';
+import { sign, verify } from "jsonwebtoken";
+import "dotenv/config";
 const JWT_SECRET = `${process.env.JWT_SECRET}`;
 
 const generateToken = async (user: object) => {
